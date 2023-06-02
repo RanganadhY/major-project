@@ -1,0 +1,45 @@
+.mydocs{
+    display: flex;
+    flex-direction: column;
+    padding-left:2rem;
+    margin-top: 5rem;
+}
+.mydocs table{
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 2rem;
+    letter-spacing: 0.09rem;
+    border-radius: 0.6rem 0.6rem 0 0;
+    overflow: hidden;
+    background-color: white;
+    ;
+
+}
+.mydocs table thead tr{
+    /* background-color:#bf0019 ; */
+    text-align: left;
+    /* color: #fff; */
+    font-weight: bold;
+}
+.mydocs table th,
+.mydocs table td{
+    padding: 1.4rem 1.7rem;
+    border: 1px solid blue;
+    font-size: 1rem;
+    color:black;
+    font-weight: bold;
+}
+/* .mydocs table tbody tr{
+    display: flex;
+    flex-direction: column;
+} */
+.vmd-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.vmd-username h3{
+    display: flex;
+    padding-left: 2rem;
+    color:#bf0019 ;
+}

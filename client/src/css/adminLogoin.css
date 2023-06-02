@@ -1,0 +1,50 @@
+.adminLogin-main-conatiner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ECF0F3;
+}
+.adminLogin-main-conatiner div{
+    width: 50vw;
+    display: flex;
+    padding: 2rem 0;
+    align-items: center;
+}
+
+.adminLogin-main-conatiner div label{
+    flex-basis: 30%;
+    font-size: 2rem;
+    
+}
+.adminLogin-main-conatiner div input{
+    flex-basis: 60%;
+    /* border: 1px solid #d1d1d1; */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    background: #fff;
+    color: #525865;
+    border-radius: 4px;
+    font-size: 1.5em;
+    line-height: 1.45;
+    outline: none;
+    padding: 0.6em 1.45em 0.7em;
+    border: none;
+}
+.adminLogin-main-conatiner div button{
+    background-color: #1DA1F2;
+    outline: none;
+    border: none;
+    padding: 0.85rem 1rem;
+    font-size: 1.8rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+.al-heading{
+    display: flex;
+    justify-content: center;
+}
+
+.register-button{
+    font-size: 1.5rem;
+}
