@@ -8,4 +8,8 @@ router.post("/edit-logged",fileControllers.editLogged)
 
 router.get("/fetch-logs/:uniqueNumber",fileControllers.fetchAFileLogs)
 
+router.post("/transfer-owner",fileControllers.transferOwner)
+
+router.get("/fetch-public-files",fileControllers.getPublicFiles)
+
 module.exports = router;

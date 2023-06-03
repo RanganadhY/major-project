@@ -6,6 +6,7 @@
     align-items: center;
     height: 90vh;
     background-color: #ECF0F3;
+    font-family: 'Lato', sans-serif !important;
 }
 .file-uploader-main-container .file-uploader-wrapper{
     width: 100%;

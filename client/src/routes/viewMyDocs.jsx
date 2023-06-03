@@ -1,23 +1,24 @@
 import React,{useState,useEffect} from 'react'
 import axios from "../axiois/axios";
-import { useLocation,useNavigate } from 'react-router';
+import { useLocation,useNavigate,useParams } from 'react-router';
 import "../css/viewMyDocs.css"
 
 function ViewMyDocs() {
 
     const {state} = useLocation();
+    const {userName} = useParams();
     console.log(state)
     const [userFiles, setuserFiles] = useState()
     useEffect(()=>{
         const fetchFiles = async()=>{
-            const response = await axios.post("/member/fetch-my-docs",{"ownerShip":state.userName})
+            const response = await axios.post("/member/fetch-my-docs",{"ownerShip":userName})
             console.log(response)
             setuserFiles(response.data.fileDetails)
         }
         fetchFiles()
     },[])
     return (
-        <>
+        <div className="vmd-main-container">
             <div className="vmd-header">
                 <div>
                     <h2>View My Docs</h2>
@@ -25,7 +26,7 @@ function ViewMyDocs() {
             </div>
             <div className="vmd-username">
                 <div>
-                    <h3>{state.userName.toUpperCase()}</h3>
+                    <h3>{userName.toUpperCase()}</h3>
                 </div>
             </div>
             <div className="vmd-main-conatiner">
@@ -40,6 +41,7 @@ function ViewMyDocs() {
                             <th>Edit Acces</th>
                             <th>Created At</th>
                             <th>View log</th>
+                            <th>Transfer Ownership</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,15 +56,21 @@ function ViewMyDocs() {
                     </table>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
 function SingleFile({fileData}){
     const {state} = useLocation()
+    const {userName} = useParams();
     const navigate = useNavigate();
+    const [isTransferClicked, setisTransferClicked] = useState(false)
     const handleViewLogs = async(fileIpfsHash,fileHash,uniqueNumber,fileName)=>{
-        navigate(`/view-logs/${state.userName}/${fileIpfsHash}/${fileHash}/${uniqueNumber}`,{state:{fileName}})
+        navigate(`/view-logs/${userName}/${fileIpfsHash}/${fileHash}/${uniqueNumber}`,{state:{fileName}})
+    }
+
+    const handleTransferOwnerShip = async(fileNumber,fileName)=>{
+        navigate(`/ownership-tranfer/${userName}/${fileNumber}/${fileName}`,{state:userName})
     }
     return (
         <>
@@ -80,7 +88,11 @@ function SingleFile({fileData}){
                             fileData.fileHash[fileData.fileHash.length-1],
                             fileData.uniqueNumber,
                             fileData.fileName
-                            )}>View Logs</button></td>
+                        )}>View Logs</button>
+                    </td>
+                    <td className='transfer' >
+                        <button onClick={()=>handleTransferOwnerShip(fileData.uniqueNumber,fileData.fileName)} >Click Here</button>
+                    </td>
                 </tr>
                         
         </>

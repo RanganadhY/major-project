@@ -21,15 +21,6 @@ function AdminLogin() {
             setmetamaskAddress(accounts[0])
             console.log(accounts[0])
             const contract = await new window.web3.eth.Contract(JSON.parse(contractABI()),contractAddress())
-            // console.log(process.env.contractABI)
-            // const docsUploaded = await contract.methods.helloworld().call()
-            // console.log(message)
-            
-            // const totalmessage = await contract.methods.donate(20).send({from :accounts[0]})
-            // console.log(totalmessage)
-            // const message = await contract.methods.getTotalDonation().call({from :accounts[0]})
-        
-            // console.log(message)
         }
     
     },[])

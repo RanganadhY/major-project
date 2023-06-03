@@ -28,21 +28,19 @@ function FileUpload() {
         setrows([...rows,newRow])
     }
     const {state} = useLocation();
-    console.log(state)
     
     const navigate = useNavigate()
     
-    // const handleVeiwfile = async()=>{
-    //     window.location.replace(`https://sitdocumentupoload.infura-ipfs.io/ipfs/${filepath}`);
-    //         }
-
     const {userName} = useParams();
-    console.log(userName)
     const viewMyDocs = async()=>{
-        navigate("/view-my-docs",{state:{userName}})
+        navigate(`/view-my-docs/${userName}`,{state:{userName}})
     }
     const viewEligibleMyDocs = ()=>{
-        navigate("/view-eligible-docs",{state:{userName}})
+        navigate(`/view-eligible-docs/${userName}`,{state:{userName}})
+    }
+
+    const handleLogout= async()=>{
+        navigate("/member-login")
     }
     return (
         <>
@@ -59,6 +57,9 @@ function FileUpload() {
                     <div>
                         <button className='button-9' onClick={viewEligibleMyDocs}>View Eligible Docs</button>
                     </div>
+                    <div>
+                        <button className='button-9' onClick={handleLogout} >Logout</button>
+                </div>
                 </div>
             </div>
             <div className="file-uploader-main-container">
@@ -71,7 +72,7 @@ function FileUpload() {
                     <button onClick={handleAddMoreRows}>Add More</button>
                 </div>
                 </div>
-                    
+                
         </>
     )
 }
@@ -90,13 +91,11 @@ function UploadFile(){
         
         const getAllUsers = async()=>{
             const response = await axios.get("/member/fetch-members/");
-            console.log(response.data.userDetails)
-            const arr = []
+            const arr = [{value:"students",label:"students"}]
             response.data.userDetails.map((data)=>{
                 arr.push({value:data.userName,label:data.userName})
                 return 0;
             })
-            setmembers(response.data.userDetails);
             setmembersOptions(arr)
             
         }
@@ -126,9 +125,7 @@ function UploadFile(){
             await window.ethereum.request({method:'eth_requestAccounts'});
             window.web3 = new Web3(window.ethereum);
             const accounts = await window.ethereum.enable()
-            console.log(accounts[0])
             const contract = await new window.web3.eth.Contract(JSON.parse(contractABI()),contractAddress())
-            console.log(contract)
     
             const contentHash = await getContentHash(file)
             console.log({
@@ -140,7 +137,13 @@ function UploadFile(){
                 "fileName":file.name
             })
             
-            const message = await contract.methods.addFile(contentHash,path).send({from :accounts[0]})
+            const message = await contract.methods.storeFileHashes(
+                userName,
+                contentHash,
+                path,
+                viewAcces,
+                editAcces   
+                ).send({from :accounts[0]})
             console.log(message)
             await axios.post("/member/post-file",{
                 "ipfsHash":path,
@@ -210,9 +213,7 @@ function UploadFile(){
                     onClick={handleFileUpload}
                 >Upload
                 </button>
-                <div>
-                    
-                </div>
+                
             </div>
             
         </>

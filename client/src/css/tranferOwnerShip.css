@@ -1,0 +1,44 @@
+.to-main-container{
+    height: 50vh;
+}
+
+.to-heading{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;;
+}
+
+.to-file-number{
+    color: red;
+    padding: 2rem 0;
+    padding-left: 4rem;
+}
+.to-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+.to-select{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+
+}
+.to-select label{
+    font-size: 2.3rem;
+}
+.transfer-button button{
+    font-size: 2rem;
+    padding: 1.5rem 2rem;
+    background: #C83535;
+    /* border: 1px solid #000000; */
+    border: none;
+    border-radius: 5px;
+    color:white;
+    content: "Upload";
+    cursor: pointer;
+    outline: none;
+    letter-spacing: 0.09rem;
+}

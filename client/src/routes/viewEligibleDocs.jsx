@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { useLocation } from 'react-router';
+import { useLocation,useParams } from 'react-router';
 import axios from "../axiois/axios"
 import { contractABI,contractAddress } from '../env/env';
 import Web3 from "web3";
@@ -12,12 +12,13 @@ const authorization = "Basic " + btoa(projectId + ":" + projectSecret);
 function ViewEligibleDocs() {
 
     const {state} = useLocation();
+    const {userName} = useParams();
     console.log(state)
     const [viewAccessFiles, setviewAccessFiles] = useState();
     const [editAccessFiles, seteditAccessFiles] = useState();
     useEffect(()=>{
         const fetchFiles = async()=>{
-            const response = await axios.get(`/member/fetch-eligible-docs/${state.userName}`)
+            const response = await axios.get(`/member/fetch-eligible-docs/${userName}`)
             console.log(response)
             seteditAccessFiles(response.data.editAccessFiles)
             setviewAccessFiles(response.data.viewAccessFiles)
@@ -29,7 +30,7 @@ function ViewEligibleDocs() {
             <div className="vmd-main-conatiner">
             <div className="vmd-username">
                 <div>
-                    <h3>{state.userName.toUpperCase()}</h3>
+                    <h3>{userName.toUpperCase()}</h3>
                 </div>
             </div>
                 <div className='mydocs'>
@@ -39,6 +40,7 @@ function ViewEligibleDocs() {
                             <thead>
                                 <tr>
                                     <th>File Name</th>
+                                    <th>OwnerShip</th>
                                     <th>Ipfs hash</th>
                                     <th>File Hash</th>
                                     <th>Created At</th>
@@ -66,6 +68,7 @@ function ViewEligibleDocs() {
                             <thead>
                                 <tr>
                                     <th>File Name</th>
+                                    <th>OwnerShip</th>
                                     <th>Ipfs hash</th>
                                     <th>File Hash</th>
                                     <th>Created At</th>
@@ -92,7 +95,7 @@ function ViewEligibleDocs() {
 
 function ViewSingleFile({fileData}){
     const {state} = useLocation();
-    
+    const {userName} = useParams();
     const handleView = async(filepath,uniqueNumber)=>{
         try{
             await window.ethereum.request({method:'eth_requestAccounts'});
@@ -100,10 +103,10 @@ function ViewSingleFile({fileData}){
             const accounts = await window.ethereum.enable()
             const contract = await new window.web3.eth.Contract(JSON.parse(contractABI()),contractAddress())
             const randomNum = Math.floor(Math.random() * 90000) + 10000;
-            await contract.methods.addUniqueId(randomNum).send({from :accounts[0]})
+            await contract.methods.storeRandomNumber(randomNum).send({from :accounts[0]})
                 .then(async(response)=>{
                     await axios.post("/file/view-logged/",{
-                        "userTouchedBy":state.userName,
+                        "userTouchedBy":userName,
                         uniqueNumber
                     })
                     .then((response)=>{
@@ -127,6 +130,7 @@ function ViewSingleFile({fileData}){
 
                 <tr>
                     <td>{fileData.fileName}</td>
+                    <td>{fileData.ownerShip}</td>
                     <td>{fileData.ipfsHash[fileData.ipfsHash.length-1]}</td>
                     <td>{fileData.fileHash[fileData.fileHash.length -1]}</td>
                     <td>{fileData.createdAt}</td>
@@ -141,7 +145,7 @@ function ViewSingleFile({fileData}){
 
 function EditSingleFile({fileData}){
     const {state} = useLocation();
-
+    const {userName} = useParams();
     const fileInputRef = useRef(null);
     const [selectedFileName, setSelectedFileName] = useState('');
     const [newFile, setnewFile] = useState()
@@ -160,10 +164,10 @@ function EditSingleFile({fileData}){
             const accounts = await window.ethereum.enable()
             const contract = await new window.web3.eth.Contract(JSON.parse(contractABI()),contractAddress())
             const randomNum = Math.floor(Math.random() * 90000) + 10000;
-            await contract.methods.addUniqueId(randomNum).send({from :accounts[0]})
+            await contract.methods.storeRandomNumber(randomNum).send({from :accounts[0]})
                 .then(async(response)=>{
                     await axios.post("/file/view-logged/",{
-                        "userTouchedBy":state.userName,
+                        "userTouchedBy":userName,
                         uniqueNumber
                     })
                     .then((response)=>{
@@ -212,11 +216,11 @@ function EditSingleFile({fileData}){
             const contract = await new window.web3.eth.Contract(JSON.parse(contractABI()),contractAddress())
             const randomNum = Math.floor(Math.random() * 90000) + 10000;
 
-            await contract.methods.addUniqueId(randomNum).send({from :accounts[0]})
+            await contract.methods.storeRandomNumber(randomNum).send({from :accounts[0]})
 
             const contentHash = await getContentHash(newFile)
             await axios.post("/file/edit-logged",{
-                "userTouchedBy":state.userName,
+                "userTouchedBy":userName,
                 uniqueNumber,
                 "newIpfsHash":path,
                 "newFileHash":contentHash,
@@ -240,6 +244,7 @@ function EditSingleFile({fileData}){
 
                 <tr>
                     <td>{fileData.fileName}</td>
+                    <td>{fileData.ownerShip}</td>
                     <td>{fileData.ipfsHash[fileData.ipfsHash.length-1]}</td>
                     <td>{fileData.fileHash[fileData.fileHash.length -1]}</td>
                     <td>{fileData.createdAt}</td>

@@ -11,8 +11,7 @@
     letter-spacing: 0.09rem;
     border-radius: 0.6rem 0.6rem 0 0;
     overflow: hidden;
-    background-color: white;
-    ;
+    background-color: white;;
 
 }
 .mydocs table thead tr{
@@ -28,6 +27,7 @@
     font-size: 1rem;
     color:black;
     font-weight: bold;
+    text-align: center;
 }
 /* .mydocs table tbody tr{
     display: flex;
@@ -42,4 +42,17 @@
     display: flex;
     padding-left: 2rem;
     color:#bf0019 ;
+}
+.display-none-transfer{
+    display: none;
+}
+
+.transfer{
+    display: flex;
+    flex-direction: column;
+    height: 5vh;
+    justify-content: space-around;
+}
+.transfer button{
+    margin-bottom: 1rem;
 }

@@ -1,5 +1,6 @@
 const fileModel = require("../models/files")
 
+
 const viewLogged = async(req,res)=>{
     const {userTouchedBy,uniqueNumber} = req.body;
     console.log(userTouchedBy,uniqueNumber)
@@ -68,6 +69,30 @@ const fetchAFileLogs = async(req,res)=>{
         return res.status(500).json({"message":"Something went wrong"})
     }
 }
+
+const transferOwner = async(req,res)=>{
+    try{
+        const {fileNumber,newOwner} = req.body;
+        const response = await fileModel.findOneAndUpdate({"uniqueNumber":fileNumber},{ownerShip:newOwner})
+        return res.status(200).json({"message":"Sucessfully transfered ownership"})
+    }catch(e){
+        console.log(e)
+        return res.status(500).json({"message":"Something went wrong"})
+    }
+}
+const getPublicFiles = async(req,res)=>{
+    try{
+        const response  = await fileModel.find({"viewAcces":{$elemMatch:{$eq:"students"}}})
+        return res.status(200).json({"files":response})
+    }catch(e){
+        console.log(e)
+        return res.status(500).json("Something went wrong")
+    }
+}
 module.exports.viewLogged = viewLogged;
 module.exports.editLogged =editLogged;
 module.exports.fetchAFileLogs = fetchAFileLogs;
+
+module.exports.transferOwner=transferOwner;
+
+module.exports.getPublicFiles = getPublicFiles
